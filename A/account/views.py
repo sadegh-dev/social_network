@@ -44,3 +44,6 @@ def user_logout(request):
     logout(request)
     messages.success(request, 'You are logout in successfully', 'success')
     return redirect('posts:all_posts')
+
+
+
