@@ -60,9 +60,14 @@ def user_dashboard(request, user_id):
     user = get_object_or_404(User, id = user_id)
     posts = Post.objects.filter(user = user)
 
+    self_dash = False
+    if request.user.id == user_id :
+        self_dash = True
+
     context= {
         'user': user,
-        'posts': posts
+        'posts': posts,
+        'self_dash' : self_dash, 
     }
     return render(request, 'account/dashboard.html', context)
 
