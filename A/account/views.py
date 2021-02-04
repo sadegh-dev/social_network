@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Profile
-
+from posts.models import Post
 
 def user_login(request):
     if request.method == 'POST':
@@ -53,7 +53,12 @@ def user_logout(request):
 
 def user_dashboard(request, user_id):
     user = get_object_or_404(User, id = user_id)
-    context= {'user': user}
+    posts = Post.objects.filter(user = user)
+
+    context= {
+        'user': user,
+        'posts': posts
+    }
     return render(request, 'account/dashboard.html', context)
 
 
