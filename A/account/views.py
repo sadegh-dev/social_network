@@ -3,6 +3,7 @@ from .forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from .models import Profile
 
 
 def user_login(request):
@@ -30,6 +31,10 @@ def user_register(request):
         if form.is_valid():
             cd = form.cleaned_data
             user = User.objects.create_user(cd['username'], cd['email'], cd['password'])
+            # Way 1
+            #myprofile = Profile(user = user)
+            #myprofile.save()
+            # -----
             login(request, user)
             messages.success(request, 'You Registered successfully', 'success')
             return redirect('posts:all_posts')
