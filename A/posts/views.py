@@ -29,11 +29,22 @@ def add_post(request, user_id):
                 new_post.user = request.user
                 new_post.slug = slugify(form.cleaned_data['body'][:30])
                 new_post.save()
-                messages.success(request, 'your post submitted', 'seccess')
+                messages.success(request, 'your post submitted', 'success')
                 return redirect('account:dashboard', user_id)
         else:
             form = AddPostForm()
         context = {'form': form}
         return render(request, 'posts/add_posts.html', context)
+    else:
+        return redirect('posts:all_posts')
+
+
+@login_required
+def post_delete(request, user_id, post_id):
+    if user_id == request.user.id:
+        p = Post.objects.filter(id = post_id)
+        p.delete()
+        messages.success(request, 'your post deleted successfully', 'success')
+        return redirect('account:dashboard', user_id)
     else:
         return redirect('posts:all_posts')

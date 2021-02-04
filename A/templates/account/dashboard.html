@@ -1,15 +1,11 @@
 {% extends 'base.html' %}
-
 {% block title %} {{ user.username }} - profile {% endblock %}
-
 {% block content %}
-
     {% if self_dash%}
         <a href="{% url 'posts:add_post' user.id %}" >Add Post</a>
     {% endif %}    
     <h4>{{ user.username }}</h4>
     <p>{{ user.profile.bio }}</p>
-    
     {% for post in posts %}
         <div class='card' >
             <a href="{{ post.get_absolute_url }}" ><p class='card-body' > {{ post.body }} </p></a>
@@ -17,6 +13,5 @@
     {% empty %}
         <p>this user has no posts</p>
     {% endfor %}
-
 {% endblock %}
 
