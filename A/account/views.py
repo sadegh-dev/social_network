@@ -5,8 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Profile
 from posts.models import Post
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
+    next = request.GET.get('next') 
     if request.method == 'POST':
         form = UserLoginForm(request.POST)
         if form.is_valid():
@@ -15,6 +17,8 @@ def user_login(request):
             if user is not None :
                 login(request, user)
                 messages.success(request, 'You are logged in successfully', 'success')
+                if next :
+                    return redirect(next)
                 return redirect('posts:all_posts')
             else:
                 messages.error(request, 'wrong username or password !', 'warning')
@@ -44,13 +48,14 @@ def user_register(request):
     return render(request, 'account/register.html', context)
 
 
-
+@login_required
 def user_logout(request):
     logout(request)
     messages.success(request, 'You are logout in successfully', 'success')
     return redirect('posts:all_posts')
 
 
+@login_required
 def user_dashboard(request, user_id):
     user = get_object_or_404(User, id = user_id)
     posts = Post.objects.filter(user = user)
