@@ -27,6 +27,9 @@
         <div class="card bg-dark text-white">
             <p class="card-header">{{ comment.user }}</p>
             <p class="card-header">{{ comment.body }}</p>
+            {% for reply in comment.rcomment.all %}
+                <p class="bg-primary text-white p-3 m-5" >{{ reply.user }} <br /> {{ reply.body }}</p>
+            {% endfor %}
         </div>
         <br />
     {% empty %}
