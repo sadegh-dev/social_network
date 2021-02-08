@@ -7,8 +7,20 @@
         <a href="{% url 'posts:post_delete' post.user.id  post.id %}">Delete post</a>
         <a href="{% url 'posts:post_edit' post.user.id  post.id %}">Edit post</a>
     {% endif %}
-    <div class="card">
+    <div class="card ">
         <p class="card-header">{{ post.user }} | {{ post.created|date }}</p>
         <p class="card-body">{{ post.body }}</p>
     </div>
+    <hr />
+    <p>this post has {{ count_comments }} comments</p>
+    {% for comment in comments %}
+        <div class="card bg-dark text-white">
+            <p class="card-header">{{ comment.user }}</p>
+            <p class="card-header">{{ comment.body }}</p>
+        </div>
+    {% empty %}
+        <div class="card bg-dark text-white">
+            <p class="card-header"> no comment </p>
+        </div>
+    {% endfor %}
 {% endblock %} 

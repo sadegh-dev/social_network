@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Comment
 from .forms import AddPostForm, EditPostForm
 from django.contrib import messages
 from django.utils.text import slugify
@@ -15,7 +15,13 @@ def all_posts(request):
 def post_detail(request, year, month, day, slug):
     print(year, month, day, slug)
     post = get_object_or_404(Post, created__year = year, created__month = month, created__day = day, slug=slug)
-    context = {'post':post}
+    comments = Comment.objects.filter(post = post, is_reply = False)
+    count_comments = comments.count()
+    context = {
+        'post':post,
+        'comments': comments,  
+        'count_comments' : count_comments  
+    }
     return render(request, 'posts/post_detail.html', context)
 
 
@@ -69,5 +75,7 @@ def post_edit(request, user_id, post_id):
         return render(request,'posts/edit_posts.html', context)
     else:
         return redirect('posts:all_posts')
+
+
 
 
