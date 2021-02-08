@@ -13,7 +13,7 @@
     </div>
     <br /><br /><hr /><br />
     {% if request.user.is_authenticated %}
-        <form action="" method="POST">
+        <form action="" method="POST" class="col-md-6">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Send Comment" class="btn btn-primary" />

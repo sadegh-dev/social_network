@@ -20,3 +20,15 @@ class AddCommentForm(forms.ModelForm):
         model = Comment
         fields = ('body',)
 
+        widgets = {
+            'body': forms.Textarea(attrs={'class':'form-control'})
+        }
+        error_messages = {
+            'body':{
+                'required':'این فیلد اجباری است'
+            }
+        }
+        help_texts = {
+            'body':'max 400 charcters'
+        }
+
