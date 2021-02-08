@@ -23,6 +23,9 @@ class Comment(models.Model):
     body = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('-created',)
+
 
     def __str__(self):
         return f'{self.body} - {self.post.body[:30]}'
