@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post, Comment
-from .forms import AddPostForm, EditPostForm
+from .forms import AddPostForm, EditPostForm, AddCommentForm
 from django.contrib import messages
 from django.utils.text import slugify
 from django.contrib.auth.decorators import login_required
@@ -15,9 +15,23 @@ def all_posts(request):
 def post_detail(request, year, month, day, slug):
     print(year, month, day, slug)
     post = get_object_or_404(Post, created__year = year, created__month = month, created__day = day, slug=slug)
+    
+    if request.method == 'POST':
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.post = post
+            new_comment.user = request.user
+            new_comment.save()
+            messages.success(request, 'your comment submitted successfully')
+    else:
+        form = AddCommentForm()
+
     comments = Comment.objects.filter(post = post, is_reply = False)
     count_comments = comments.count()
+
     context = {
+        'form' : form,
         'post':post,
         'comments': comments,  
         'count_comments' : count_comments  
